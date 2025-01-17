@@ -8,32 +8,35 @@ import ru.hogwarts.school.model.Faculty;
 @Service
 public class FacultyService {
 
-    private final HashMap<Long, Faculty> facultyHashMap = new HashMap<>();
+    private final HashMap<Long, Faculty> faculties = new HashMap<>();
     private long lastId;
 
     public Faculty createFaculty(Faculty faculty) {
         faculty.setId(++lastId);
-        facultyHashMap.put(faculty.getId(), faculty);
+        faculties.put(faculty.getId(), faculty);
         return faculty;
     }
 
     public Faculty findFaculty(long id) {
-        return facultyHashMap.get(id);
+        return faculties.get(id);
     }
 
     public Faculty editFaculty(Faculty faculty) {
-        facultyHashMap.put(faculty.getId(), faculty);
+        if (!faculties.containsKey(faculty.getId())) {
+            return null;
+        }
+        faculties.put(faculty.getId(), faculty);
         return faculty;
     }
 
     public Faculty deleteFaculty(long id) {
-        return facultyHashMap.remove(id);
+        return faculties.remove(id);
     }
 
     public Collection<Faculty> getAListOfFacultiesBySpecifiedColor(String color) {
-        return facultyHashMap.values()
-                             .stream()
-                             .filter(faculty -> faculty.getColor().equals(color))
-                             .toList();
+        return faculties.values()
+                        .stream()
+                        .filter(faculty -> faculty.getColor().equals(color))
+                        .toList();
     }
 }

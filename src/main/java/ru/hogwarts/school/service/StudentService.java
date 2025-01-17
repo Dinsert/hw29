@@ -8,33 +8,36 @@ import ru.hogwarts.school.model.Student;
 @Service
 public class StudentService {
 
-    private final HashMap<Long, Student> studentHashMap = new HashMap<>();
+    private final HashMap<Long, Student> students = new HashMap<>();
     private long lastId;
 
     public Student createStudent(Student student) {
         student.setId(++lastId);
-        studentHashMap.put(student.getId(), student);
+        students.put(student.getId(), student);
         return student;
     }
 
     public Student findStudent(long id) {
-        return studentHashMap.get(id);
+        return students.get(id);
     }
 
     public Student editStudent(Student student) {
-        studentHashMap.put(student.getId(), student);
+        if (!students.containsKey(student.getId())) {
+            return null;
+        }
+        students.put(student.getId(), student);
         return student;
     }
 
     public Student deleteStudent(long id) {
-        return studentHashMap.remove(id);
+        return students.remove(id);
     }
 
     public Collection<Student> getAListOfStudentsBySpecifiedAge(int age) {
-        return studentHashMap.values()
-                             .stream()
-                             .filter(student -> student.getAge() == age)
-                             .toList();
+        return students.values()
+                       .stream()
+                       .filter(student -> student.getAge() == age)
+                       .toList();
     }
 
 }

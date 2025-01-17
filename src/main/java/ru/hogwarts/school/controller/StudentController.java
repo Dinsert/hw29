@@ -2,6 +2,8 @@ package ru.hogwarts.school.controller;
 
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,16 +27,24 @@ public class StudentController {
         return studentService.createStudent(student);
     }
 
-    @GetMapping("/{id}")
-    public Student find(@PathVariable long id) {
-        return studentService.findStudent(id);
+    @GetMapping("{id}")
+    public ResponseEntity<Student> find(@PathVariable Long id) {
+        Student student = studentService.findStudent(id);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student);
     }
 
     @PutMapping
-    public Student edit(@RequestBody Student student) {
-        return studentService.editStudent(student);
+    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
+        Student foundStudent = studentService.editStudent(student);
+        if (foundStudent == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(foundStudent);
     }
-    
+
     @DeleteMapping("/{id}")
     public Student delete(@PathVariable long id) {
         return studentService.deleteStudent(id);
@@ -45,4 +55,3 @@ public class StudentController {
         return studentService.getAListOfStudentsBySpecifiedAge(age);
     }
 }
-
