@@ -32,5 +32,4 @@ public class StudentService {
     public Collection<Student> getAListOfStudentsBySpecifiedAge(int age) {
         return studentRepository.findByAge(age);
     }
-
 }
