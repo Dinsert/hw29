@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,9 +29,11 @@ class FacultyControllerTest {
     private FacultyController out;
     private final long id = 1L;
     private final String color = "Red";
-    private final Faculty faculty = new Faculty(id, "Gryffindor", color);
+    private final String name = "Gryffindor";
+    private final Faculty faculty = new Faculty(id, name, color);
     private final String sucsessfullRemove = "Факультет удалён";
     private final Collection<Faculty> faculties = new ArrayList<>(List.of(faculty));
+    private final Collection<Student> students = new ArrayList<>(List.of(new Student(id, "Harry", 15, faculty)));
 
     @Test
     void create() {
@@ -85,6 +88,22 @@ class FacultyControllerTest {
         when(facultyMock.getAListOfFacultiesBySpecifiedColor(anyString())).thenReturn(faculties);
         Collection<Faculty> actual = out.getAListOfFacultiesBySpecifiedColor(color);
         Collection<Faculty> expected = faculties;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getFacultyByNameOrColor() {
+        when(facultyMock.getFacultyByNameOrColor(anyString())).thenReturn(faculty);
+        Faculty actual = out.getFacultyByNameOrColor(name);
+        Faculty expected = faculty;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllStudents() {
+        when(facultyMock.getAllStudents(anyLong())).thenReturn(students);
+        Collection<Student> actual = out.getAllStudents(id);
+        Collection<Student> expected = students;
         assertEquals(expected, actual);
     }
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 @Service
@@ -37,4 +38,15 @@ public class FacultyServiceImpl implements FacultyService {
     public Collection<Faculty> getAListOfFacultiesBySpecifiedColor(String color) {
         return facultyRepository.findByColor(color);
     }
+
+    @Override
+    public Faculty getFacultyByNameOrColor(String nameOrColor) {
+        return facultyRepository.findFirstByNameOrColorIgnoreCase(nameOrColor, nameOrColor).orElseThrow();
+    }
+
+    @Override
+    public Collection<Student> getAllStudents(long id) {
+        return facultyRepository.getAllStudentsByFacultyId(id);
+    }
+
 }
