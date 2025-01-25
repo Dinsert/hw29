@@ -2,6 +2,7 @@ package ru.hogwarts.school.service;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
+import jakarta.transaction.Transactional;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class AvatarServiceImpl implements AvatarService {
@@ -52,7 +54,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar findAvatar(long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
+        return avatarRepository.findByStudentId(studentId).orElseGet(Avatar::new);
     }
 
     private String getExtensions(String fileName) {

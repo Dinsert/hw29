@@ -47,9 +47,8 @@ public class AvatarController {
     public void downloadAvatarFrom(@PathVariable long studentId, HttpServletResponse response) throws IOException {
         Avatar avatar = avatarService.findAvatar(studentId);
         Path path = Path.of(avatar.getFilePath());
-        try (
-                InputStream is = Files.newInputStream(path);
-                OutputStream os = response.getOutputStream()) {
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = response.getOutputStream()) {
             response.setStatus(HttpStatus.OK.value());
             response.setContentType(avatar.getMediaType());
             response.setContentLength(avatar.getData().length);
