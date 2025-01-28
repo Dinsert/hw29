@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
@@ -28,9 +29,12 @@ class StudentControllerTest {
     private StudentController out;
     private final long id = 1L;
     private final int age = 15;
-    private final Student student = new Student(id, "Harry", age);
+    private final Faculty faculty = new Faculty(id, "Gryffindor", "Red");
+    private final Student student = new Student(id, "Harry", age, faculty);
     private final String sucsessfullRemove = "Студент удалён";
     private final Collection<Student> students = new ArrayList<>(List.of(student));
+    private final int min = 10;
+    private final int max = 20;
 
     @Test
     void create() {
@@ -85,6 +89,22 @@ class StudentControllerTest {
         when(studentMock.getAListOfStudentsBySpecifiedAge(anyInt())).thenReturn(students);
         Collection<Student> actual = out.getAListOfStudentsBySpecifiedAge(age);
         Collection<Student> expected = students;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllStudentsBetweenTargetAge() {
+        when(studentMock.getAllStudentsInASpecifiedAgeRange(anyInt(), anyInt())).thenReturn(students);
+        Collection<Student> actual = out.getAllStudentsBetweenTargetAge(min, max);
+        Collection<Student> expected = students;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getFaculty() {
+        when(studentMock.getFacultyStudent(anyLong())).thenReturn(faculty);
+        Faculty actual = out.getFaculty(id);
+        Faculty expected = faculty;
         assertEquals(expected, actual);
     }
 }

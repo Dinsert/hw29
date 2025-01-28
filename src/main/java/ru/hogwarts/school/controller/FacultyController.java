@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 @RequestMapping("/faculty")
@@ -53,5 +55,15 @@ public class FacultyController {
     @GetMapping("/get-list-by-color/{color}")
     public Collection<Faculty> getAListOfFacultiesBySpecifiedColor(@PathVariable String color) {
         return facultyService.getAListOfFacultiesBySpecifiedColor(color);
+    }
+
+    @GetMapping
+    public Faculty getFacultyByNameOrColor(@RequestParam String nameOrColor) {
+        return facultyService.getFacultyByNameOrColor(nameOrColor);
+    }
+
+    @GetMapping("/get-students/{id}")
+    public Collection<Student> getAllStudents(@PathVariable long id) {
+        return facultyService.getAllStudents(id);
     }
 }

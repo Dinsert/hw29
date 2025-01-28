@@ -2,6 +2,7 @@ package ru.hogwarts.school.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -9,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
@@ -24,21 +27,26 @@ class StudentServiceTest {
     @Mock
     private StudentRepository studentMock;
     private StudentService out;
+    private Faculty faculty;
     private long id;
     private int age;
     private Student student;
     private String successfulRemove;
     private Collection<Student> students;
-
+    private int min;
+    private int max;
 
     @BeforeEach
     void setUp() {
         out = new StudentServiceImpl(studentMock);
+        faculty = new Faculty(id, "Gryffindor", "Red");
         id = 1L;
         age = 15;
-        student = new Student(id, "Harry", age);
+        student = new Student(id, "Harry", age, faculty);
         successfulRemove = "Студент удалён";
         students = new ArrayList<>(List.of(student));
+        min = 10;
+        max = 20;
     }
 
     @Test
@@ -94,4 +102,32 @@ class StudentServiceTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void getAllStudentsInASpecifiedAgeRange() {
+        when(studentMock.findByAgeBetween(anyInt(), anyInt())).thenReturn(students);
+        Collection<Student> actual = out.getAllStudentsInASpecifiedAgeRange(min, max);
+        Collection<Student> expected = students;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllStudentsInASpecifiedAgeRangeIsEmpty() {
+        when(studentMock.findByAgeBetween(anyInt(), anyInt())).thenReturn(Collections.emptyList());
+        Collection<Student> actual = out.getAllStudentsInASpecifiedAgeRange(min, max);
+        Collection<Student> expected = Collections.emptyList();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getFacultyStudent() {
+        when(studentMock.getFacultyStudent(anyLong())).thenReturn(Optional.of(faculty));
+        Faculty actual = out.getFacultyStudent(id);
+        Faculty expected = faculty;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldThrowNoSuchElementExceptionAtGetFacultyStudent() {
+        assertThrows(NoSuchElementException.class, () -> out.getFacultyStudent(anyLong()));
+    }
 }
