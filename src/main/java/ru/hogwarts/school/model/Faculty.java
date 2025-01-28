@@ -1,6 +1,8 @@
 package ru.hogwarts.school.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,11 +21,14 @@ public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "color")
     private String color;
-    @JsonIgnore
     @ToString.Exclude
+    @JsonManagedReference
     @OneToMany(mappedBy = "faculty")
+    @Column(name = "students")
     private List<Student> students;
 
     public Faculty(long id, String name, String color) {
