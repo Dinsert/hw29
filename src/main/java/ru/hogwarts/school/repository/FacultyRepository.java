@@ -13,7 +13,7 @@ public interface FacultyRepository extends JpaRepository<Faculty, Long> {
 
     Collection<Faculty> findByColor(String color);
 
-    Optional<Faculty> findFirstByNameOrColorIgnoreCase(String name, String color);
+    Optional<Faculty> findFirstByNameIgnoreCaseOrColorIgnoreCase(String name, String color);
 
     @Query("select students from faculties where id = :id")
     Collection<Student> getAllStudentsByFacultyId(long id);

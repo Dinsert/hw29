@@ -2,6 +2,7 @@ package ru.hogwarts.school.service;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,8 +13,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.exception.AvatarNotFoundException;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
@@ -30,8 +37,10 @@ public class AvatarServiceImpl implements AvatarService {
     private final StudentRepository studentRepository;
 
     @Override
-    public void uploadAvatar(long studentId, MultipartFile avatarFile) throws IOException {
-        Student student = studentRepository.findById(studentId).orElseThrow();
+    public String uploadAvatar(long studentId, MultipartFile avatarFile) throws IOException {
+        Student student = studentRepository
+                .findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Студент по идентификатору " + studentId + " не был найден"));
         Path filePath = Path.of(avatarDir, student + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
@@ -50,10 +59,36 @@ public class AvatarServiceImpl implements AvatarService {
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setData(avatarFile.getBytes());
         avatarRepository.save(avatar);
+        return "Аватарка по идентификатору студента " + studentId + " была загружена";
     }
 
     @Override
-    public Avatar findAvatar(long studentId) {
+    public ResponseEntity<byte[]> downloadAvatarFromDB(long studentId) {
+        Avatar avatar = avatarRepository
+                .findByStudentId(studentId)
+                .orElseThrow(() -> new AvatarNotFoundException("Аватарка по идентификатору студента " + studentId + " не найдена"));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+        headers.setContentLength(avatar.getFileSize());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+    }
+
+    @Override
+    public void downloadAvatarFromFile(long studentId, HttpServletResponse response) throws IOException {
+        Avatar avatar = avatarRepository
+                .findByStudentId(studentId)
+                .orElseThrow(() -> new AvatarNotFoundException("Аватарка по идентификатору студента " + studentId + " не найдена"));
+        Path path = Path.of(avatar.getFilePath());
+        try (InputStream is = Files.newInputStream(path);
+                OutputStream os = response.getOutputStream()) {
+            response.setStatus(HttpStatus.OK.value());
+            response.setContentType(avatar.getMediaType());
+            response.setContentLength(avatar.getData().length);
+            is.transferTo(os);
+        }
+    }
+
+    private Avatar findAvatar(long studentId) {
         return avatarRepository.findByStudentId(studentId).orElseGet(Avatar::new);
     }
 

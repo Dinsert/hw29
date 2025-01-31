@@ -30,21 +30,13 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> find(@PathVariable long id) {
-        Student student = studentService.findStudent(id);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(student);
+    public Student find(@PathVariable long id) {
+        return studentService.findStudent(id);
     }
 
     @PutMapping
-    public ResponseEntity<Student> edit(@RequestBody Student student) {
-        Student foundStudent = studentService.editStudent(student);
-        if (foundStudent == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(foundStudent);
+    public Student edit(@RequestBody Student student) {
+        return studentService.editStudent(student);
     }
 
     @DeleteMapping("/{id}")

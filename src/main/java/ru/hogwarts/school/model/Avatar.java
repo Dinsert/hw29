@@ -9,13 +9,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Entity(name = "avatars")
-@Data
-@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "avatars")
 public class Avatar {
 
     @Id
@@ -27,8 +33,8 @@ public class Avatar {
     private String mediaType;
     @Column(name = "fileSize")
     private long fileSize;
-    @Lob
     @Column(name = "data")
+    @Lob
     private byte[] data;
     @OneToOne
     @JoinColumn(name = "student_id")
