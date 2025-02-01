@@ -8,14 +8,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 @EqualsAndHashCode(of = "id")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @ToString
@@ -26,17 +29,17 @@ public class Avatar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    long id;
     @Column(name = "filePath")
-    private String filePath;
+    String filePath;
     @Column(name = "mediaType")
-    private String mediaType;
+    String mediaType;
     @Column(name = "fileSize")
-    private long fileSize;
+    long fileSize;
     @Column(name = "data")
     @Lob
-    private byte[] data;
+    byte[] data;
     @OneToOne
     @JoinColumn(name = "student_id")
-    private Student student;
+    Student student;
 }

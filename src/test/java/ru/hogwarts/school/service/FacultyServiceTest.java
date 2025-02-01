@@ -41,7 +41,7 @@ class FacultyServiceTest {
         out = new FacultyServiceImpl(facultyMock);
         id = 1L;
         color = "Red";
-        students = new ArrayList<>(List.of(new Student(id, "Harry", 15, new Faculty(id, null, null))));
+        students = new ArrayList<>(List.of(new Student(id, "Harry", 15)));
         faculty = new Faculty(id, "Gryffindor", color);
         successfulRemove = "Факультет удалён";
         faculties = new ArrayList<>(List.of(faculty));
@@ -102,7 +102,7 @@ class FacultyServiceTest {
 
     @Test
     void getFacultyByNameOrColor() {
-        when(facultyMock.findFirstByNameOrColorIgnoreCase(anyString(), anyString())).thenReturn(Optional.of(faculty));
+//        when(facultyMock.findFirstByNameOrColorIgnoreCase(anyString(), anyString())).thenReturn(Optional.of(faculty));
         Faculty actual = out.getFacultyByNameOrColor(color);
         Faculty expected = faculty;
         assertEquals(expected, actual);

@@ -1,9 +1,9 @@
 package ru.hogwarts.school.controller;
 
 import java.util.Collection;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +19,11 @@ import ru.hogwarts.school.service.StudentService;
 
 @RequestMapping("/student")
 @RestController
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class StudentController {
 
-    private final StudentService studentService;
+    StudentService studentService;
 
     @PostMapping
     public Student create(@RequestBody Student student) {

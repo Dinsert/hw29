@@ -11,7 +11,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,13 +31,14 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 @Transactional
 @Service
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class AvatarServiceImpl implements AvatarService {
 
     @Value("${path.to.avatars.folder}")
-    private String avatarDir;
-    private final AvatarRepository avatarRepository;
-    private final StudentRepository studentRepository;
+    @NonFinal String avatarDir;
+    AvatarRepository avatarRepository;
+    StudentRepository studentRepository;
 
     @Override
     public String uploadAvatar(long studentId, MultipartFile avatarFile) throws IOException {

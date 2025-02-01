@@ -33,7 +33,7 @@ class FacultyControllerTest {
     private final Faculty faculty = new Faculty(id, name, color);
     private final String sucsessfullRemove = "Факультет удалён";
     private final Collection<Faculty> faculties = new ArrayList<>(List.of(faculty));
-    private final Collection<Student> students = new ArrayList<>(List.of(new Student(id, "Harry", 15, faculty)));
+    private final Collection<Student> students = new ArrayList<>(List.of(new Student(id, "Harry", 15)));
 
     @Test
     void create() {

@@ -42,7 +42,7 @@ class StudentServiceTest {
         faculty = new Faculty(id, "Gryffindor", "Red");
         id = 1L;
         age = 15;
-        student = new Student(id, "Harry", age, faculty);
+        student = new Student(id, "Harry", age);
         successfulRemove = "Студент удалён";
         students = new ArrayList<>(List.of(student));
         min = 10;

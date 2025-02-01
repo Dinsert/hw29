@@ -30,7 +30,7 @@ class StudentControllerTest {
     private final long id = 1L;
     private final int age = 15;
     private final Faculty faculty = new Faculty(id, "Gryffindor", "Red");
-    private final Student student = new Student(id, "Harry", age, faculty);
+    private final Student student = new Student(id, "Harry", age);
     private final String sucsessfullRemove = "Студент удалён";
     private final Collection<Student> students = new ArrayList<>(List.of(student));
     private final int min = 10;
