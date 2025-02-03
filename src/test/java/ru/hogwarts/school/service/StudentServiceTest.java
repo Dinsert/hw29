@@ -1,22 +1,23 @@
 package ru.hogwarts.school.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.hogwarts.school.exception.FacultyNotFoundException;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
@@ -43,7 +44,7 @@ class StudentServiceTest {
         id = 1L;
         age = 15;
         student = new Student(id, "Harry", age);
-        successfulRemove = "Студент удалён";
+        successfulRemove = "Студент по идентификатору " + id + " удалён";
         students = new ArrayList<>(List.of(student));
         min = 10;
         max = 20;
@@ -66,9 +67,8 @@ class StudentServiceTest {
     }
 
     @Test
-    void shouldThrowRuntimeExceptionAtFindStudent() {
-        when(studentMock.findById(id)).thenThrow(RuntimeException.class);
-        assertThrows(RuntimeException.class, () -> out.findStudent(id));
+    void shouldThrowStudentNotFoundExceptionAtFindStudent() {
+        assertThrows(StudentNotFoundException.class, () -> out.findStudent(id));
     }
 
     @Test
@@ -81,9 +81,16 @@ class StudentServiceTest {
 
     @Test
     void deleteStudent() {
+        when(studentMock.findById(anyLong())).thenReturn(Optional.ofNullable(student));
+        doNothing().when(studentMock).delete(any());
         String actual = out.deleteStudent(id);
         String expected = successfulRemove;
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldThrowStudentNotFoundExceptionAtDeleteStudent() {
+        assertThrows(StudentNotFoundException.class, () -> out.deleteStudent(id));
     }
 
     @Test
@@ -95,11 +102,8 @@ class StudentServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyListAtGetFacultiesByTargetAge() {
-        when(studentMock.findByAge(anyInt())).thenReturn(Collections.emptyList());
-        Collection<Student> actual = out.getAListOfStudentsBySpecifiedAge(age);
-        Collection<Student> expected = Collections.emptyList();
-        assertEquals(expected, actual);
+    void shouldThrowStudentNotFoundExceptionAtGetAListOfFacultiesBySpecifiedAge() {
+        assertThrows(StudentNotFoundException.class, () -> out.getAListOfStudentsBySpecifiedAge(age));
     }
 
     @Test
@@ -111,12 +115,10 @@ class StudentServiceTest {
     }
 
     @Test
-    void getAllStudentsInASpecifiedAgeRangeIsEmpty() {
-        when(studentMock.findByAgeBetween(anyInt(), anyInt())).thenReturn(Collections.emptyList());
-        Collection<Student> actual = out.getAllStudentsInASpecifiedAgeRange(min, max);
-        Collection<Student> expected = Collections.emptyList();
-        assertEquals(expected, actual);
+    void shouldThrowStudentNotFoundExceptionAtGetAllStudentsInASpecifiedAgeRange() {
+        assertThrows(StudentNotFoundException.class, () -> out.getAllStudentsInASpecifiedAgeRange(min, max));
     }
+
 
     @Test
     void getFacultyStudent() {
@@ -127,7 +129,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void shouldThrowNoSuchElementExceptionAtGetFacultyStudent() {
-        assertThrows(NoSuchElementException.class, () -> out.getFacultyStudent(anyLong()));
+    void shouldThrowFacultyNotFoundExceptionAtGetFacultyStudent() {
+        assertThrows(FacultyNotFoundException.class, () -> out.getFacultyStudent(anyLong()));
     }
 }

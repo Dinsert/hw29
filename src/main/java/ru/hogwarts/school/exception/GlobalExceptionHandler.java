@@ -20,6 +20,11 @@ public class GlobalExceptionHandler {
         return createErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> handleAvatarNotFound(AvatarNotFoundException e) {
+        return createErrorResponse(e.getMessage());
+    }
+
     private ResponseEntity<String> createErrorResponse(String message) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         HttpHeaders headers = new HttpHeaders();

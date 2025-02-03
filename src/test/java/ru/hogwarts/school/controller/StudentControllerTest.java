@@ -14,8 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import ru.hogwarts.school.exception.FacultyNotFoundException;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
@@ -53,11 +53,9 @@ class StudentControllerTest {
     }
 
     @Test
-    void shouldReturnHTTPStatusNotFoundAtFind() {
-//        when(studentMock.findStudent(anyLong())).thenReturn(null);
-//        HttpStatusCode actual = out.find(id).getStatusCode();
-//        HttpStatusCode expected = HttpStatusCode.valueOf(HttpStatus.NOT_FOUND.value());
-//        assertEquals(expected, actual);
+    void shouldThrowStudentNotFoundExceptionAtFind() {
+        when(studentMock.findStudent(anyLong())).thenThrow(StudentNotFoundException.class);
+        assertThrows(StudentNotFoundException.class, () -> out.find(id));
     }
 
     @Test
@@ -69,19 +67,17 @@ class StudentControllerTest {
     }
 
     @Test
-    void shouldReturnHTTPStatusNotFoundAtEdit() {
-//        when(studentMock.editStudent(any())).thenReturn(null);
-//        HttpStatusCode actual = out.edit(student).getStatusCode();
-//        HttpStatusCode expected = HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value());
-//        assertEquals(expected, actual);
-    }
-
-    @Test
     void delete() {
         when(studentMock.deleteStudent(anyLong())).thenReturn(sucsessfullRemove);
         String actual = out.delete(anyLong());
         String expected = sucsessfullRemove;
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldThrowStudentNotFoundExceptionAtDelete() {
+        when(studentMock.deleteStudent(anyLong())).thenThrow(StudentNotFoundException.class);
+        assertThrows(StudentNotFoundException.class, () -> out.delete(id));
     }
 
     @Test
@@ -93,6 +89,12 @@ class StudentControllerTest {
     }
 
     @Test
+    void shouldThrowStudentNotFoundExceptionAtGetAListOfFacultiesBySpecifiedColor() {
+        when(studentMock.getAListOfStudentsBySpecifiedAge(anyInt())).thenThrow(StudentNotFoundException.class);
+        assertThrows(StudentNotFoundException.class, () -> out.getAListOfStudentsBySpecifiedAge(age));
+    }
+
+    @Test
     void getAllStudentsBetweenTargetAge() {
         when(studentMock.getAllStudentsInASpecifiedAgeRange(anyInt(), anyInt())).thenReturn(students);
         Collection<Student> actual = out.getAllStudentsBetweenTargetAge(min, max);
@@ -101,10 +103,22 @@ class StudentControllerTest {
     }
 
     @Test
+    void shouldThrowStudentNotFoundExceptionAtGetAllStudentsBetweenTargetAge() {
+        when(studentMock.getAllStudentsInASpecifiedAgeRange(anyInt(), anyInt())).thenThrow(StudentNotFoundException.class);
+        assertThrows(StudentNotFoundException.class, () -> out.getAllStudentsBetweenTargetAge(min, max));
+    }
+
+    @Test
     void getFaculty() {
         when(studentMock.getFacultyStudent(anyLong())).thenReturn(faculty);
         Faculty actual = out.getFaculty(id);
         Faculty expected = faculty;
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldThrowFacultyNotFoundExceptionAtGetFaculty() {
+        when(studentMock.getFacultyStudent(anyLong())).thenThrow(FacultyNotFoundException.class);
+        assertThrows(FacultyNotFoundException.class, () -> out.getFaculty(id));
     }
 }

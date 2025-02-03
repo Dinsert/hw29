@@ -10,3 +10,4 @@ INSERT INTO students (id, name, age) VALUES (4, 'Harry4', 15);
 INSERT INTO students (id, name, age) VALUES (5, 'Harry5', 16);
 INSERT INTO students (id, name, age) VALUES (6, 'Harry6', 16);
 INSERT INTO students (id, name, age) VALUES (7, 'Harry7', 15);
+INSERT INTO students (id, name, age) VALUES (8, 'Harry8', 15);

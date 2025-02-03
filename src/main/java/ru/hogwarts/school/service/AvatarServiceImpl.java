@@ -35,8 +35,6 @@ import ru.hogwarts.school.repository.StudentRepository;
 @RequiredArgsConstructor
 public class AvatarServiceImpl implements AvatarService {
 
-    @Value("${path.to.avatars.folder}")
-    @NonFinal String avatarDir;
     AvatarRepository avatarRepository;
     StudentRepository studentRepository;
 
@@ -45,11 +43,11 @@ public class AvatarServiceImpl implements AvatarService {
         Student student = studentRepository
                 .findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Студент по идентификатору " + studentId + " не был найден"));
-        Path filePath = Path.of(avatarDir, student + getExtensions(avatarFile.getOriginalFilename()));
+        Path filePath = Path.of("/avatars", student + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
-                InputStream is = avatarFile.getInputStream();
+                InputStream is = avatarFile. getInputStream();
                 OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
                 BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
