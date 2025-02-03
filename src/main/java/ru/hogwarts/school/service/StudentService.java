@@ -1,8 +1,6 @@
 package ru.hogwarts.school.service;
 
 import java.util.Collection;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 
 public interface StudentService {
 
