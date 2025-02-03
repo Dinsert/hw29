@@ -21,13 +21,5 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "age")
-    private int age;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "faculty_id")
-    @JsonBackReference
-    private Faculty faculty;
+
 }

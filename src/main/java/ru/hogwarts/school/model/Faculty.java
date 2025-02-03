@@ -19,14 +19,7 @@ public class Faculty {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "color")
-    private String color;
-    @OneToMany(mappedBy = "faculty")
-    @JsonManagedReference
-    private List<Student> students;
+
 
     public Faculty(long id, String name, String color) {
         this.id = id;
