@@ -59,4 +59,19 @@ public class StudentController {
     public Faculty getFaculty(@PathVariable long id) {
         return studentService.getFacultyStudent(id);
     }
+
+    @GetMapping("/get-quantity-all-students")
+    public int getQuantityAllStudents() {
+        return studentService.getQuantityAllStudents();
+    }
+
+    @GetMapping("/get-average-age")
+    public double getAverageAgeAllStudents() {
+        return studentService.getAverageAgeAllStudents();
+    }
+
+    @GetMapping("/get-all")
+    public Collection<Student> getAllStudents(@RequestParam int page, @RequestParam int size) {
+        return studentService.getAllStudents(page, size);
+    }
 }

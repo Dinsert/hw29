@@ -1,9 +1,11 @@
 package ru.hogwarts.school.service;
 
 import java.util.Collection;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.exception.StudentNotFoundException;
@@ -64,5 +66,21 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository
                 .getFacultyStudent(id)
                 .orElseThrow(() -> new FacultyNotFoundException("Факультет по идентификатору студента " + id + " не был найден"));
+    }
+
+    @Override
+    public int getQuantityAllStudents() {
+        return studentRepository.getCountStudents();
+    }
+
+    @Override
+    public double getAverageAgeAllStudents() {
+        return studentRepository.getAverageValueByAgeAllStudents();
+    }
+
+    @Override
+    public Collection<Student> getAllStudents(int page, int size) {
+        PageRequest request = PageRequest.of(page - 1, size);
+        return studentRepository.findAll(request).getContent();
     }
 }

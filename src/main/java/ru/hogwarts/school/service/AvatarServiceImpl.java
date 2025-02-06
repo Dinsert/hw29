@@ -11,11 +11,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -88,6 +91,12 @@ public class AvatarServiceImpl implements AvatarService {
             response.setContentLength(avatar.getData().length);
             is.transferTo(os);
         }
+    }
+
+    @Override
+    public Collection<Avatar> getAllAvatars(int page, int size) {
+        PageRequest request = PageRequest.of(page - 1, size);
+        return avatarRepository.findAll(request).getContent();
     }
 
     private Avatar findAvatar(long studentId) {

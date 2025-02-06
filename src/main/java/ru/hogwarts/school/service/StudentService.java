@@ -19,4 +19,10 @@ public interface StudentService {
     Collection<Student> getAllStudentsInASpecifiedAgeRange(int min, int max);
 
     Faculty getFacultyStudent(long id);
+
+    int getQuantityAllStudents();
+
+    double getAverageAgeAllStudents();
+
+    Collection<Student> getAllStudents(int page, int size);
 }

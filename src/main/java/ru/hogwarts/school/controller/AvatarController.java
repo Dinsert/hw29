@@ -2,6 +2,7 @@ package ru.hogwarts.school.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.service.AvatarService;
 
 @RequestMapping("/avatar")
@@ -37,5 +39,10 @@ public class AvatarController {
     @GetMapping("/from-file/{studentId}")
     public void downloadAvatarFromFile(@PathVariable long studentId, HttpServletResponse response) throws IOException {
         avatarService.downloadAvatarFromFile(studentId, response);
+    }
+
+    @GetMapping
+    public Collection<Avatar> getAllAvatars(int page, int size) {
+        return avatarService.getAllAvatars(page, size);
     }
 }
