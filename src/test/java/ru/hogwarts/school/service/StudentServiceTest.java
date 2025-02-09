@@ -53,16 +53,20 @@ class StudentServiceTest {
     @Test
     void createStudent() {
         when(studentMock.save(student)).thenReturn(student);
+
         Student actual = out.createStudent(student);
         Student expected = student;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void findStudent() {
         when(studentMock.findById(id)).thenReturn(Optional.of(student));
+
         Student actual = out.findStudent(id);
         Student expected = student;
+
         assertEquals(expected, actual);
     }
 
@@ -74,8 +78,10 @@ class StudentServiceTest {
     @Test
     void editStudent() {
         when(studentMock.save(student)).thenReturn(student);
+
         Student actual = out.editStudent(student);
         Student expected = student;
+
         assertEquals(expected, actual);
     }
 
@@ -83,8 +89,10 @@ class StudentServiceTest {
     void deleteStudent() {
         when(studentMock.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         doNothing().when(studentMock).delete(any());
+
         String actual = out.deleteStudent(id);
         String expected = successfulRemove;
+
         assertEquals(expected, actual);
     }
 
@@ -96,8 +104,10 @@ class StudentServiceTest {
     @Test
     void getAListOfFacultiesBySpecifiedAge() {
         when(studentMock.findByAge(anyInt())).thenReturn(students);
+
         Collection<Student> actual = out.getAListOfStudentsBySpecifiedAge(age);
         Collection<Student> expected = new ArrayList<>(List.of(student));
+
         assertEquals(expected, actual);
     }
 
@@ -109,8 +119,10 @@ class StudentServiceTest {
     @Test
     void getAllStudentsInASpecifiedAgeRange() {
         when(studentMock.findByAgeBetween(anyInt(), anyInt())).thenReturn(students);
+
         Collection<Student> actual = out.getAllStudentsInASpecifiedAgeRange(min, max);
         Collection<Student> expected = students;
+
         assertEquals(expected, actual);
     }
 
@@ -123,8 +135,10 @@ class StudentServiceTest {
     @Test
     void getFacultyStudent() {
         when(studentMock.getFacultyStudent(anyLong())).thenReturn(Optional.of(faculty));
+
         Faculty actual = out.getFacultyStudent(id);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 

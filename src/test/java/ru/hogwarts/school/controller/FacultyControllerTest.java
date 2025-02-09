@@ -38,86 +38,105 @@ class FacultyControllerTest {
     @Test
     void create() {
         when(facultyMock.createFaculty(any())).thenReturn(faculty);
+
         Faculty actual = out.create(faculty);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void find() {
         when(facultyMock.findFaculty(anyLong())).thenReturn(faculty);
+
         Faculty actual = out.find(id);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowFacultyNotFoundExceptionAtFind() {
         when(facultyMock.findFaculty(anyLong())).thenThrow(FacultyNotFoundException.class);
+
         assertThrows(FacultyNotFoundException.class, () -> out.find(id));
     }
 
     @Test
     void edit() {
         when(facultyMock.editFaculty(any())).thenReturn(faculty);
+
         Faculty actual = out.edit(faculty);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void delete() {
         when(facultyMock.deleteFaculty(anyLong())).thenReturn(sucsessfullRemove);
+
         String actual = out.delete(anyLong());
         String expected = sucsessfullRemove;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowFacultyNotFoundExceptionAtDelete() {
         when(facultyMock.deleteFaculty(anyLong())).thenThrow(FacultyNotFoundException.class);
+
         assertThrows(FacultyNotFoundException.class, () -> out.delete(id));
     }
 
     @Test
     void getAListOfFacultiesBySpecifiedColor() {
         when(facultyMock.getAListOfFacultiesBySpecifiedColor(anyString())).thenReturn(faculties);
+
         Collection<Faculty> actual = out.getAListOfFacultiesBySpecifiedColor(color);
         Collection<Faculty> expected = faculties;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowFacultyNotFoundExceptionAtGetAListOfFacultiesBySpecifiedColor() {
         when(facultyMock.getAListOfFacultiesBySpecifiedColor(anyString())).thenThrow(FacultyNotFoundException.class);
+
         assertThrows(FacultyNotFoundException.class, () -> out.getAListOfFacultiesBySpecifiedColor(color));
     }
 
     @Test
     void getFacultyByNameOrColor() {
         when(facultyMock.getFacultyByNameOrColor(anyString())).thenReturn(faculty);
+
         Faculty actual = out.getFacultyByNameOrColor(name);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowFacultyNotFoundExceptionAtGetFacultyByNameOrColor() {
         when(facultyMock.getFacultyByNameOrColor(anyString())).thenThrow(FacultyNotFoundException.class);
+
         assertThrows(FacultyNotFoundException.class, () -> out.getFacultyByNameOrColor(name));
     }
 
     @Test
     void getAllStudents() {
         when(facultyMock.getAllStudents(anyLong())).thenReturn(students);
+
         Collection<Student> actual = out.getAllStudents(id);
         Collection<Student> expected = students;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowStudentNotFoundExceptionAtGetAllStudents() {
         when(facultyMock.getAllStudents(anyLong())).thenThrow(StudentNotFoundException.class);
+
         assertThrows(StudentNotFoundException.class, () -> out.getAllStudents(id));
     }
 

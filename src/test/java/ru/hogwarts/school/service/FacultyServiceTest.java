@@ -50,16 +50,20 @@ class FacultyServiceTest {
     @Test
     void createFaculty() {
         when(facultyMock.save(faculty)).thenReturn(faculty);
+
         Faculty actual = out.createFaculty(faculty);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void findFaculty() {
         when(facultyMock.findById(id)).thenReturn(Optional.of(faculty));
+
         Faculty actual = out.findFaculty(id);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
@@ -71,8 +75,10 @@ class FacultyServiceTest {
     @Test
     void editFaculty() {
         when(facultyMock.save(faculty)).thenReturn(faculty);
+
         Faculty actual = out.editFaculty(faculty);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
@@ -80,8 +86,10 @@ class FacultyServiceTest {
     void deleteFaculty() {
         when(facultyMock.findById(id)).thenReturn(Optional.ofNullable(faculty));
         doNothing().when(facultyMock).delete(any());
+
         String actual = out.deleteFaculty(id);
         String expected = successfulRemove;
+
         assertEquals(expected, actual);
     }
 
@@ -93,8 +101,10 @@ class FacultyServiceTest {
     @Test
     void getAListOfFacultiesBySpecifiedColor() {
         when(facultyMock.findByColor(anyString())).thenReturn(faculties);
+
         Collection<Faculty> actual = out.getAListOfFacultiesBySpecifiedColor(color);
         Collection<Faculty> expected = new ArrayList<>(List.of(faculty));
+
         assertEquals(expected, actual);
     }
 
@@ -106,8 +116,10 @@ class FacultyServiceTest {
     @Test
     void getFacultyByNameOrColor() {
         when(facultyMock.findFirstByNameIgnoreCaseOrColorIgnoreCase(anyString(), anyString())).thenReturn(Optional.of(faculty));
+
         Faculty actual = out.getFacultyByNameOrColor(color);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
@@ -119,8 +131,10 @@ class FacultyServiceTest {
     @Test
     void getAllStudents() {
         when(facultyMock.getAllStudentsByFacultyId(anyLong())).thenReturn(students);
+
         Collection<Student> actual = out.getAllStudents(id);
         Collection<Student> expected = students;
+
         assertEquals(expected, actual);
     }
 

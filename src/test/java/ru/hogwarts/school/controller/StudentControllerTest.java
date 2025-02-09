@@ -39,86 +39,105 @@ class StudentControllerTest {
     @Test
     void create() {
         when(studentMock.createStudent(any())).thenReturn(student);
+
         Student actual = out.create(student);
         Student expected = student;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void find() {
         when(studentMock.findStudent(anyLong())).thenReturn(student);
+
         Student actual = out.find(id);
         Student expected = student;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowStudentNotFoundExceptionAtFind() {
         when(studentMock.findStudent(anyLong())).thenThrow(StudentNotFoundException.class);
+
         assertThrows(StudentNotFoundException.class, () -> out.find(id));
     }
 
     @Test
     void edit() {
         when(studentMock.editStudent(any())).thenReturn(student);
+
         Student actual = out.edit(student);
         Student expected = student;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void delete() {
         when(studentMock.deleteStudent(anyLong())).thenReturn(sucsessfullRemove);
+
         String actual = out.delete(anyLong());
         String expected = sucsessfullRemove;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowStudentNotFoundExceptionAtDelete() {
         when(studentMock.deleteStudent(anyLong())).thenThrow(StudentNotFoundException.class);
+
         assertThrows(StudentNotFoundException.class, () -> out.delete(id));
     }
 
     @Test
     void getAListOfFacultiesBySpecifiedColor() {
         when(studentMock.getAListOfStudentsBySpecifiedAge(anyInt())).thenReturn(students);
+
         Collection<Student> actual = out.getAListOfStudentsBySpecifiedAge(age);
         Collection<Student> expected = students;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowStudentNotFoundExceptionAtGetAListOfFacultiesBySpecifiedColor() {
         when(studentMock.getAListOfStudentsBySpecifiedAge(anyInt())).thenThrow(StudentNotFoundException.class);
+
         assertThrows(StudentNotFoundException.class, () -> out.getAListOfStudentsBySpecifiedAge(age));
     }
 
     @Test
     void getAllStudentsBetweenTargetAge() {
         when(studentMock.getAllStudentsInASpecifiedAgeRange(anyInt(), anyInt())).thenReturn(students);
+
         Collection<Student> actual = out.getAllStudentsBetweenTargetAge(min, max);
         Collection<Student> expected = students;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowStudentNotFoundExceptionAtGetAllStudentsBetweenTargetAge() {
         when(studentMock.getAllStudentsInASpecifiedAgeRange(anyInt(), anyInt())).thenThrow(StudentNotFoundException.class);
+
         assertThrows(StudentNotFoundException.class, () -> out.getAllStudentsBetweenTargetAge(min, max));
     }
 
     @Test
     void getFaculty() {
         when(studentMock.getFacultyStudent(anyLong())).thenReturn(faculty);
+
         Faculty actual = out.getFaculty(id);
         Faculty expected = faculty;
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowFacultyNotFoundExceptionAtGetFaculty() {
         when(studentMock.getFacultyStudent(anyLong())).thenThrow(FacultyNotFoundException.class);
+
         assertThrows(FacultyNotFoundException.class, () -> out.getFaculty(id));
     }
 }

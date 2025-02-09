@@ -1,7 +1,6 @@
 package ru.hogwarts.school.service;
 
 import java.util.Collection;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -46,35 +46,39 @@ class AvatarServiceTest {
     int contentLength = 42408;
     String path = "src/test/resources/test.jpg";
     long id = 1L;
+    Avatar avatar = new Avatar();
 
     @Test
     void uploadAvatar() throws IOException {
-        Avatar avatar = new Avatar();
         when(studentMock.findById(anyLong())).thenReturn(Optional.of(new Student(id, "Harry1", 15)));
         when(avatarMock.findByStudentId(anyLong())).thenReturn(Optional.of(avatar));
         when(avatarMock.save(any())).thenReturn(avatar);
+
         String actual = out.uploadAvatar(id, avatarFile());
         String expected = "Аватарка по идентификатору студента 1 была загружена";
+
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldThrowStudentNotFoundExceptionAtUploadAvatar() {
         when(studentMock.findById(anyLong())).thenThrow(StudentNotFoundException.class);
+
         assertThrows(StudentNotFoundException.class, () -> out.uploadAvatar(id, avatarFile()));
     }
 
     @Test
     void downloadAvatarFromDB() throws IOException {
-        Avatar avatar = new Avatar();
         avatar.setMediaType(contentType);
         avatar.setFileSize(contentLength);
         avatar.setData(getData());
         when(avatarMock.findByStudentId(anyLong())).thenReturn(Optional.of(avatar));
+
         ResponseEntity<byte[]> actual = out.downloadAvatarFromDB(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(contentType));
         headers.setContentLength(contentLength);
+
         assertEquals(HttpStatus.OK, actual.getStatusCode());
         assertEquals(headers, actual.getHeaders());
         assertArrayEquals(getData(), actual.getBody());
@@ -83,24 +87,27 @@ class AvatarServiceTest {
     @Test
     void shouldThrowAvatarNotFoundExceptionAtDownloadAvatarFromDB() throws IOException {
         when(avatarMock.findByStudentId(anyLong())).thenThrow(AvatarNotFoundException.class);
+
         assertThrows(AvatarNotFoundException.class, () -> out.downloadAvatarFromDB(id));
     }
 
     @Test
     void downloadAvatarFromFile() throws IOException {
-        Avatar avatar = new Avatar();
         avatar.setMediaType(contentType);
         avatar.setData(getData());
         avatar.setFilePath(path);
         when(avatarMock.findByStudentId(anyLong())).thenReturn(Optional.of(avatar));
+
         HttpServletResponse response = new MockHttpServletResponse();
         out.downloadAvatarFromFile(id, response);
+
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
     @Test
     void shouldThrowAvatarNotFoundExceptionAtDownloadAvatarFromFile() throws IOException {
         when(avatarMock.findByStudentId(anyLong())).thenThrow(AvatarNotFoundException.class);
+
         assertThrows(AvatarNotFoundException.class, () -> out.downloadAvatarFromFile(id, new MockHttpServletResponse()));
     }
 
