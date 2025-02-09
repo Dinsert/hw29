@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,22 +24,21 @@ import org.springframework.util.MultiValueMap;
 import ru.hogwarts.school.controller.AvatarController;
 
 @ActiveProfiles("test")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class SchoolApplicationAvatarTests {
 
     @LocalServerPort
-    @NonFinal int port;
+    private int port;
     @Autowired
-    @NonFinal AvatarController avatarController;
+    private AvatarController avatarController;
     @Autowired
-    @NonFinal TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate;
 
-    String fromDb = "/from-db";
-    String fromFile = "/from-file";
-    String pathVariable7 = "/7";
-    String pathVariable5 = "/5";
-    String path = "src/test/resources/test.jpg";
+    private final String fromDb = "/from-db";
+    private final String fromFile = "/from-file";
+    private final String pathVariable7 = "/7";
+    private final String pathVariable5 = "/5";
+    private final String path = "src/test/resources/test.jpg";
 
     @Test
     void contextLoads() throws Exception {

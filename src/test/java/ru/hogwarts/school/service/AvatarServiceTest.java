@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,21 +29,20 @@ import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 @ExtendWith(MockitoExtension.class)
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 class AvatarServiceTest {
 
     @Mock
-    @NonFinal AvatarRepository avatarMock;
+    private AvatarRepository avatarMock;
     @Mock
-    @NonFinal StudentRepository studentMock;
+    private StudentRepository studentMock;
     @InjectMocks
-    @NonFinal AvatarServiceImpl out;
+    private AvatarServiceImpl out;
 
-    String contentType = "image/jpeg";
-    int contentLength = 42408;
-    String path = "src/test/resources/test.jpg";
-    long id = 1L;
-    Avatar avatar = new Avatar();
+    private final String contentType = "image/jpeg";
+    private final int contentLength = 42408;
+    private final String path = "src/test/resources/test.jpg";
+    private final long id = 1L;
+    private final Avatar avatar = new Avatar();
 
     @Test
     void uploadAvatar() throws IOException {

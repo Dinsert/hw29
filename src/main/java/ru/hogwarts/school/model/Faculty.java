@@ -8,17 +8,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
-import lombok.experimental.FieldDefaults;
 
 @EqualsAndHashCode(of = "id")
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @ToString
@@ -28,16 +25,16 @@ public class Faculty {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "color")
-    String color;
+    private String color;
     @OneToMany(mappedBy = "faculty")
     @Column(name = "students")
     @JsonManagedReference
     @Exclude
-    List<Student> students;
+    private List<Student> students;
 
     public Faculty(long id, String name, String color) {
         this.id = id;

@@ -1,9 +1,7 @@
 package ru.hogwarts.school.service;
 
 import java.util.Collection;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.exception.StudentNotFoundException;
@@ -12,11 +10,10 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 @Service
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class FacultyServiceImpl implements FacultyService {
 
-    FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
 
     @Override
     public Faculty createFaculty(Faculty faculty) {

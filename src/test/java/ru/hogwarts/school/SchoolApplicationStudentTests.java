@@ -2,9 +2,6 @@ package ru.hogwarts.school;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,31 +18,30 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
 @ActiveProfiles("test")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class SchoolApplicationStudentTests {
 
     @LocalServerPort
-    @NonFinal int port;
+    private int port;
     @Autowired
-    @NonFinal StudentController studentController;
+    private StudentController studentController;
     @Autowired
-    @NonFinal TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate;
 
-    int age15 = 15;
-    int age16 = 16;
+    private final int age15 = 15;
+    private final int age16 = 16;
 
-    Student studentEdit = new Student(4L, "testName", 99);
-    Student student5 = new Student(5L, "Harry5", age16);
-    Student[] students = {student5, new Student(6L, "Harry6", age16)};
+    private final Student studentEdit = new Student(4L, "testName", 99);
+    private final Student student5 = new Student(5L, "Harry5", age16);
+    private final Student[] students = {student5, new Student(6L, "Harry6", age16)};
 
-    String message = "{\"message\":\"";
-    String status404 = "\",\"status\":404}";
-    String studentNotFound = message + "Студент по идентификатору 9 не был найден" + status404;
+    private final String message = "{\"message\":\"";
+    private final String status404 = "\",\"status\":404}";
+    private final String studentNotFound = message + "Студент по идентификатору 9 не был найден" + status404;
 
-    String getListByAge = "/get-list-by-age";
-    String getFaculty = "/get-faculty";
-    String pathVariable9 = "/9";
+    private final String getListByAge = "/get-list-by-age";
+    private final String getFaculty = "/get-faculty";
+    private final String pathVariable9 = "/9";
 
     @Test
     void contextLoads() throws Exception {

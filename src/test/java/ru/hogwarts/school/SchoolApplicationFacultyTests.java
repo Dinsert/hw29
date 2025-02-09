@@ -2,9 +2,6 @@ package ru.hogwarts.school;
 
 import static org.assertj.core.api.Assertions.*;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,33 +18,32 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
 @ActiveProfiles("test")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class SchoolApplicationFacultyTests {
 
     @LocalServerPort
-    @NonFinal int port;
+    private int port;
     @Autowired
-    @NonFinal FacultyController facultyController;
+    private FacultyController facultyController;
     @Autowired
-    @NonFinal TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate;
 
-    long id2 = 2L;
-    long id3 = 3L;
-    String name2 = "Gryffindor2";
-    String color2 = "Red2";
-    String color7 = "Red7";
+    private final long id2 = 2L;
+    private final long id3 = 3L;
+    private final String name2 = "Gryffindor2";
+    private final String color2 = "Red2";
+    private final String color7 = "Red7";
 
-    Faculty faculty2 = new Faculty(id2, name2, color2);
-    Faculty facultyEdit = new Faculty(id3, "testName", "testColor");
+    private final Faculty faculty2 = new Faculty(id2, name2, color2);
+    private final Faculty facultyEdit = new Faculty(id3, "testName", "testColor");
 
-    String message = "{\"message\":\"";
-    String status404 = "\",\"status\":404}";
+    private final String message = "{\"message\":\"";
+    private final String status404 = "\",\"status\":404}";
 
-    String getListByColor = "/get-list-by-color";
-    String nameOrColor = "?nameOrColor=";
-    String getStudents = "/get-students";
-    String pathVariable7 = "/7";
+    private final String getListByColor = "/get-list-by-color";
+    private final String nameOrColor = "?nameOrColor=";
+    private final String getStudents = "/get-students";
+    private final String pathVariable7 = "/7";
 
     @Test
     void contextLoads() throws Exception {
